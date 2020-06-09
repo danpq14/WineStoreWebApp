@@ -10,6 +10,7 @@ public class Account {
         this.username = username;
         this.password = password;
         this.customerId = customerId;
+        this.role = role;
     }
 
     public String getUsername() {

@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -32,6 +33,9 @@ public class LoginServlet extends HttpServlet {
         try {
             Account account = wineStoreDAO.checkAccount(username, password);
             if (account != null) {
+                HttpSession session = request.getSession();
+                session.setAttribute("role", account.getRole());
+                System.out.println(account.getRole());
                 RequestDispatcher requestDispatcher = request.getRequestDispatcher("views/homePage.jsp");
                 requestDispatcher.forward(request, response);
             }
