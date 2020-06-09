@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebFilter(filterName = "StoreManagerFilter", urlPatterns = "/store-manager111")
+@WebFilter(filterName = "StoreManagerFilter", urlPatterns = "/store-manager")
 public class StoreManagerFilter implements Filter {
     public void destroy() {
     }

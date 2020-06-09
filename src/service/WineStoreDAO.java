@@ -139,6 +139,22 @@ public class WineStoreDAO {
         insertOrderDetail.setInt(2, wineId);
         insertOrderDetail.setInt(3, amount);
         insertOrderDetail.execute();
+    }
 
+    public void deleteProduct(int wineId) throws SQLException {
+        Wine wine = selectWineByID(wineId);
+        String sql = "delete from wine where wineId = ?";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setInt(1, wineId);
+        statement.execute();
+    }
+
+    public void addProduct(String name, float price, int stock) throws SQLException {
+        String sql = "insert into wine (wineName,price,stock) values (?,?,?)";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, name);
+        statement.setFloat(2, price);
+        statement.setInt(3, stock);
+        statement.execute();
     }
 }

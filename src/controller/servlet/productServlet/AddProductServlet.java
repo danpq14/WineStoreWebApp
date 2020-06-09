@@ -13,8 +13,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet(name = "AllProductServlet", urlPatterns = "/AllProduct")
-public class AllProductServlet extends HttpServlet {
+@WebServlet(name = "AddProductServlet", urlPatterns = "/addProduct")
+public class AddProductServlet extends HttpServlet {
     public WineStoreDAO wineStoreDAO;
 
     {
@@ -28,20 +28,28 @@ public class AllProductServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("utf-8");
+        response.setContentType("text/html;charset=UTF-8");
+        String name = request.getParameter("name");
+        float price = Float.parseFloat(request.getParameter("price"));
+        int stock = Integer.parseInt(request.getParameter("stock"));
 
+        try {
+            wineStoreDAO.addProduct(name, price, stock);
+            List<Wine> wines =  wineStoreDAO.selectWine(name);
+            request.setAttribute("wines", wines);
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("views/productView/addResult.jsp");
+            requestDispatcher.forward(request, response);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("utf-8");
         response.setContentType("text/html;charset=UTF-8");
-        List<Wine> wineList = null;
-        try {
-           wineList = wineStoreDAO.getAllProduct();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        request.setAttribute("wines", wineList);
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("views/productView/AllProduct.jsp");
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("views/productView/addProductForm.jsp");
         requestDispatcher.forward(request, response);
     }
 }
