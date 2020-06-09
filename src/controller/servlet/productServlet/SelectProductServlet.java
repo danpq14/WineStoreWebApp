@@ -34,9 +34,9 @@ public class SelectProductServlet extends HttpServlet {
             response.setContentType("text/html;charset=UTF-8");
             String keyword = request.getParameter("keyword");
         try {
-            List<Wine> wines = wineStoreDAO.selectWine(keyword);
-            request.setAttribute("wines", wines);
-            RequestDispatcher requestDispatcher = request.getRequestDispatcher("views/productView/searchResult.jsp");
+            List<Wine> wines = wineStoreDAO.selectWine(keyword); // lấy ra kết quả từ database
+            request.setAttribute("wines", wines); //truyền kết quả lại cho trang jsp
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("views/productView/searchResult.jsp"); //chuyển hướng đến trang jsp
             requestDispatcher.forward(request, response);
         } catch (SQLException e) {
             e.printStackTrace();

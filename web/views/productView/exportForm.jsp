@@ -36,7 +36,7 @@
 </div>
 <div style="text-align: center">
     <div style="display: inline-block">
-        <form action="/inventory?action=import&id=${wine.getId()}" method="post">
+        <form action="/inventory?action=export&id=${wine.getId()}" method="post">
             <div class="form-group row">
                 <label class="col-4 col-form-label">Số lượng</label>
                 <div class="col-8">

@@ -28,66 +28,75 @@ public class InventoryServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
+        int wineId = Integer.parseInt(request.getParameter("id"));
         int amount  = Integer.parseInt(request.getParameter("amount"));
         String action = request.getParameter("action");
 
         if (action.equalsIgnoreCase("import")) {
             try {
-                importProduct(id, amount, request, response);
+                importProduct(wineId, amount, request, response);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
         else if (action.equalsIgnoreCase("export")) {
             int customerId = Integer.parseInt(request.getParameter("customerId"));
-            exportProduct(id, amount, customerId, request, response);
+            try {
+                exportProduct(wineId, amount, customerId, request, response);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        int amount  = Integer.parseInt(request.getParameter("amount"));
+        int wineId = Integer.parseInt(request.getParameter("id"));
         String action = request.getParameter("action");
 
         if (action.equalsIgnoreCase("import")) {
             try {
-                showImportForm(id, request, response);
+                showImportForm(wineId, request, response);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
         else if (action.equalsIgnoreCase("export")) {
             try {
-                showExportForm(id, amount,request, response );
+                showExportForm(wineId,request, response);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    public void showImportForm(int id, HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
-        Wine wine = wineStoreDAO.selectWineByID(id);
+    public void showImportForm(int wineId, HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+        Wine wine = wineStoreDAO.selectWineByID(wineId);
         request.setAttribute("wine", wine);
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("views/productView/importForm.jsp");
         requestDispatcher.forward(request, response);
     }
 
-    public void importProduct(int id, int amount, HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
-        wineStoreDAO.importProduct(id, amount);
-        Wine wine = wineStoreDAO.selectWineByID(id);
+    public void importProduct(int wineId, int amount, HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+        wineStoreDAO.importProduct(wineId, amount);
+        Wine wine = wineStoreDAO.selectWineByID(wineId);
         request.setAttribute("wine", wine);
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("views/productView/editResult.jsp");
         requestDispatcher.forward(request, response);
     }
 
-    public void showExportForm(int id, int amount, HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+    public void showExportForm(int wineId, HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+        Wine wine = wineStoreDAO.selectWineByID(wineId);
+        request.setAttribute("wine", wine);
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("views/productView/exportForm.jsp");
         requestDispatcher.forward(request, response);
     }
 
-    private void exportProduct(int id, int amount, int customerId, HttpServletRequest request, HttpServletResponse response) {
-        wineStoreDAO.exportProduct(id, amount, customerId);
+    private void exportProduct(int wineId, int amount, int customerId, HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+        wineStoreDAO.exportProduct(wineId, amount, customerId);
+        Wine wine = wineStoreDAO.selectWineByID(wineId);
+        request.setAttribute("wine", wine);
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("views/productView/editResult.jsp");
+        requestDispatcher.forward(request, response);
     }
 }

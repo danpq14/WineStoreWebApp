@@ -119,18 +119,26 @@ public class WineStoreDAO {
         statement.execute();
     }
 
-    public void exportProduct(int id, int amount,int customerId) throws SQLException {
+    public void exportProduct(int wineId, int amount,int customerId) throws SQLException {
         String insertOrder = "call insertNewOrder(?)";
         PreparedStatement statement = connection.prepareStatement(insertOrder);
         statement.setInt(1, customerId);
-
-        String getNewestOrder = "call getNewestOrder(?)";
-        CallableStatement callableStatement = connection.prepareCall(getNewestOrder);
-        callableStatement.setString(1, "@order_id");
-
-//        CallableStatement statement = connection.prepareCall(sql);
-        statement.setInt(1, id);
-        statement.setInt(2, amount);
         statement.execute();
+
+        String getNewestOrder = "call getNewestOrder()";
+        CallableStatement callableStatement = connection.prepareCall(getNewestOrder);
+        ResultSet resultSet = callableStatement.executeQuery();
+        int orderId = -1;
+        while (resultSet.next()) {
+            orderId = resultSet.getInt(1);
+        }
+
+        String insert_order_detail = "call insert_order_detail(?,?,?)";
+        CallableStatement insertOrderDetail = connection.prepareCall(insert_order_detail);
+        insertOrderDetail.setInt(1, orderId);
+        insertOrderDetail.setInt(2, wineId);
+        insertOrderDetail.setInt(3, amount);
+        insertOrderDetail.execute();
+
     }
 }
