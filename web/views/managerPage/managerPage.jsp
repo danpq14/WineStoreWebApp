@@ -44,16 +44,16 @@
         <a class="nav-link" href="/addProduct">Thêm mới sản phẩm</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="/#">Danh sách khách hàng</a>
+        <a class="nav-link" href="/customerList">Danh sách khách hàng</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="/#">Tra cứu khách hàng</a>
+        <a class="nav-link" href="/customerSearch">Tra cứu khách hàng</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="/#">Tra cứu hóa đơn</a>
+        <a class="nav-link" href="#">Tra cứu hóa đơn</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="/#">Theo dõi doanh thu</a>
+        <a class="nav-link" href="#">Theo dõi doanh thu</a>
     </li>
 </ul>
 </body>

@@ -1,8 +1,7 @@
 package service;
 
 import controller.connection.DatabaseConnection;
-import model.Account;
-import model.Wine;
+import model.*;
 import service.method.CheckAccount;
 
 import java.sql.*;
@@ -156,5 +155,156 @@ public class WineStoreDAO {
         statement.setFloat(2, price);
         statement.setInt(3, stock);
         statement.execute();
+    }
+
+    public List<Customer> getAllCustomer() throws SQLException {
+        List<Customer> customers = new ArrayList<>();
+        String sql = "select * from customers where customerId < 90000";
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+
+        while (resultSet.next()) {
+            int customerId = resultSet.getInt(1);
+            String name = resultSet.getString(2);
+            String phone = resultSet.getString(3);
+            float discount = resultSet.getFloat(4);
+
+            Customer customer = new Customer(customerId, name, phone, discount);
+            customers.add(customer);
+        }
+
+        return customers;
+    }
+
+    public Customer getCustomerById(int id) throws SQLException {
+        Customer customer = null;
+        String sql = "select * from customers where customerId = ?";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setInt(1, id);
+        ResultSet resultSet = statement.executeQuery();
+
+        while (resultSet.next()) {
+            String name = resultSet.getString(2);
+            String phone = resultSet.getString(3);
+            float discount = resultSet.getFloat(4);
+            customer = new Customer(id, name, phone, discount);
+        }
+        return customer;
+    }
+
+    public void updateCustomer(int customerId, String name, String phone, float discount) throws SQLException {
+        String sql = "update customers set customerName = ?,phone = ?, discount = ? where customerId = ?";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, name);
+        statement.setString(2, phone);
+        statement.setFloat(3, discount);
+        statement.setInt(4, customerId);
+        statement.execute();
+    }
+
+    public int countOrderByCustomer(int id) throws SQLException {
+        String sql = "call countOrderByCustomer(?)";
+        int countOrder = 0;
+        CallableStatement statement = connection.prepareCall(sql);
+        statement.setInt(1, id);
+        ResultSet resultSet = statement.executeQuery();
+
+        while (resultSet.next()) {
+            countOrder = resultSet.getInt(1);
+        }
+        return countOrder;
+    }
+
+    public float getMaxRevenueFromCustomer(int id) throws SQLException {
+        String sql = "call maxOrderFromCustomer(?)";
+        float max = 0;
+        CallableStatement statement = connection.prepareCall(sql);
+        statement.setInt(1, id);
+        ResultSet resultSet = statement.executeQuery();
+
+        while (resultSet.next()){
+            max = resultSet.getFloat(1);
+        }
+        return max;
+    }
+
+    public float getTotalRevenueFromCustomer(int id) throws SQLException {
+        String sql = "call totalRevenueFromCustomer(?)";
+        CallableStatement statement = connection.prepareCall(sql);
+        statement.setInt(1, id);
+        ResultSet resultSet = statement.executeQuery();
+        float totalRevenue = 0;
+        while (resultSet.next()) {
+            totalRevenue = resultSet.getFloat(1);
+        }
+        return totalRevenue;
+    }
+
+    public Order getOrderDetail(int orderId) throws SQLException {
+        String sql = "call getOrderDetail(?)";
+        CallableStatement statement = connection.prepareCall(sql);
+        statement.setInt(1, orderId);
+        int order_id = -1;
+        Date orderDate = null;
+        int customerId = -1;
+        List<WineInBill> list = new ArrayList<>();
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            order_id = resultSet.getInt(1);
+            orderDate = resultSet.getDate(2);
+            customerId = resultSet.getInt(3);
+            String customerName = resultSet.getString(4);
+            int wineId = resultSet.getInt(5);
+            String wineName = resultSet.getString(6);
+            int quantity = resultSet.getInt(7);
+            float cost = resultSet.getFloat(8);
+
+            WineInBill wine = new WineInBill(wineId, wineName, quantity, cost);
+            list.add(wine);
+        }
+        Order order = new Order(orderId, customerId, orderDate, list);
+        return order;
+    }
+
+    public List<Order> getAllOrderFromCustomer(int customerId) throws SQLException {
+        String getAllOrder = "call getAllOrderByCustomer(?)";
+        CallableStatement statement = connection.prepareCall(getAllOrder);
+        statement.setInt(1, customerId);
+        List<Integer> orderIdList = new ArrayList<>();
+        try  {
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                int orderId = resultSet.getInt("orderId");
+                orderIdList.add(orderId);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        List<Order> orders = new ArrayList<>();
+        for (Integer id : orderIdList) {
+            Order order = getOrderDetail(id);
+            orders.add(order);
+        }
+        return orders;
+    }
+
+    public List<Customer> selectCustomer(String keyword) throws SQLException {
+        List<Customer> customers = new ArrayList<>();
+        String sql = "call selectCustomerByNameOrId(?)";
+        CallableStatement statement = connection.prepareCall(sql);
+        statement.setString(1, keyword);
+
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            int customerId = resultSet.getInt(1);
+            String name = resultSet.getString(2);
+            String phone = resultSet.getString(3);
+            float discount = resultSet.getFloat(4);
+
+            Customer customer = new Customer(customerId,name,phone,discount);
+            customers.add(customer);
+        }
+        return customers;
     }
 }

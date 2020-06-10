@@ -6,11 +6,11 @@ import java.util.List;
 public class Order {
     private int orderId;
     private int customerId;
-    private String Date;
+    private Date Date;
     private List<WineInBill> wines;
     private float totalCost = 0;
 
-    public Order(int orderId, int customerId, String date, List<WineInBill> wines) {
+    public Order(int orderId, int customerId, Date date, List<WineInBill> wines) {
         this.orderId = orderId;
         this.customerId = customerId;
         Date = date;
@@ -20,6 +20,8 @@ public class Order {
             this.totalCost += wine.getCost();
         }
     }
+
+
 
     public int getOrderId() {
         return orderId;
@@ -37,11 +39,11 @@ public class Order {
         this.customerId = customerId;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return Date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         Date = date;
     }
 
@@ -60,4 +62,5 @@ public class Order {
     public void setTotalCost(float totalCost) {
         this.totalCost = totalCost;
     }
+
 }
