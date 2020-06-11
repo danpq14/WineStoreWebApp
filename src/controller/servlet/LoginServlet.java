@@ -32,12 +32,19 @@ public class LoginServlet extends HttpServlet {
             String password = request.getParameter("password");
         try {
             Account account = wineStoreDAO.checkAccount(username, password);
+            int role_admin = 1;
+            int role_customer = 0;
             if (account != null) {
-//                HttpSession session = request.getSession();
-//                session.setAttribute("role", account.getRole());
-//                System.out.println(account.getRole());
-                RequestDispatcher requestDispatcher = request.getRequestDispatcher("views/homePage.jsp");
-                requestDispatcher.forward(request, response);
+                HttpSession session = request.getSession();
+                session.setAttribute("account", account);
+                if (account.getRole() == role_admin) {
+                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("views/managerPage/managerPage.jsp");
+                    requestDispatcher.forward(request, response);
+                }
+                else {
+                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("views/ux/customerHomePage.jsp");
+                    requestDispatcher.forward(request, response);
+                }
             }
             else {
                 RequestDispatcher requestDispatcher = request.getRequestDispatcher("views/fail-login.jsp");

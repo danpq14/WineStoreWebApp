@@ -21,7 +21,7 @@
         <a class="nav-link active" href="#">Trang chủ</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="/AllProduct">Danh sách tất cả các sản phẩm</a>
+        <a class="nav-link" href="/customerAction?action=showAllProduct">Danh sách tất cả các sản phẩm</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="/topProduct">Top sản phẩm bán chạy</a>

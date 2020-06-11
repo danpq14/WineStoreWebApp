@@ -410,4 +410,28 @@ public class WineStoreDAO {
         return topRevenueList;
     }
 
+    public void insertNewOrderFromCart(Order order) throws SQLException {
+        String insertOrder = "call insertNewOrder(?)";
+        PreparedStatement statement = connection.prepareStatement(insertOrder);
+        statement.setInt(1, order.getCustomerId());
+        statement.execute();
+
+        String getNewestOrder = "call getNewestOrder()";
+        CallableStatement callableStatement = connection.prepareCall(getNewestOrder);
+        ResultSet resultSet = callableStatement.executeQuery();
+        int orderId = -1;
+        while (resultSet.next()) {
+            orderId = resultSet.getInt(1);
+        }
+
+        List<WineInBill> list = order.getWines();
+        for (WineInBill item : list) {
+            String insert_order_detail = "call insert_order_detail(?,?,?)";
+            CallableStatement insertOrderDetail = connection.prepareCall(insert_order_detail);
+            insertOrderDetail.setInt(1, orderId);
+            insertOrderDetail.setInt(2, item.getWineId());
+            insertOrderDetail.setInt(3, item.getQuantity());
+            insertOrderDetail.execute();
+        }
+    }
 }
