@@ -5,8 +5,11 @@ import model.*;
 import service.method.CheckAccount;
 
 import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 
 public class WineStoreDAO {
     private Connection connection;
@@ -293,7 +296,7 @@ public class WineStoreDAO {
         List<Customer> customers = new ArrayList<>();
         String sql = "call selectCustomerByNameOrId(?)";
         CallableStatement statement = connection.prepareCall(sql);
-        statement.setString(1, keyword);
+        statement.setString(1,"%" + keyword + "%");
 
         ResultSet resultSet = statement.executeQuery();
         while (resultSet.next()) {
@@ -307,4 +310,104 @@ public class WineStoreDAO {
         }
         return customers;
     }
+
+    public List<Order> getOrderList(String keyword) throws SQLException {
+        List<Integer> orderIdList = new ArrayList<>();
+        String selectAllOrderIdCorrect = "call selectOrderByKeyword(?)";
+        CallableStatement statement = connection.prepareCall(selectAllOrderIdCorrect);
+        statement.setString(1, "%" + keyword + "%");
+        ResultSet resultSet = statement.executeQuery();
+
+        while (resultSet.next()) {
+            int orderId = resultSet.getInt("orderId");
+            orderIdList.add(orderId);
+        }
+
+        List<Order> orders = new ArrayList<>();
+        for (Integer id : orderIdList) {
+            Order order = getOrderDetail(id);
+            orders.add(order);
+        }
+        return orders;
+    }
+
+    public float getRevenueOverTime(String beginDate, String endDate) throws SQLException {
+        String sql = "call selectRevenueOverTime(?,?)";
+        CallableStatement statement = connection.prepareCall(sql);
+        statement.setString(1, beginDate);
+        statement.setString(2, endDate);
+        ResultSet resultSet = statement.executeQuery();
+        float revenue = 0;
+
+        while (resultSet.next()) {
+            revenue = resultSet.getFloat(1);
+        }
+        return revenue;
+    }
+
+    public int getOrderOverTime(String beginDate, String endDate) throws SQLException {
+        String sql = "call selectOrderOverTime(?,?)";
+        CallableStatement statement = connection.prepareCall(sql);
+        statement.setString(1, beginDate);
+        statement.setString(2, endDate);
+        ResultSet resultSet = statement.executeQuery();
+        int amountOrder = 0;
+
+        while (resultSet.next()) {
+            amountOrder = resultSet.getInt(1);
+        }
+        return amountOrder;
+    }
+
+    public List<Order> getTopOrder() throws SQLException {
+        String sql = "call getTopOrder()";
+        CallableStatement statement = connection.prepareCall(sql);
+        ResultSet resultSet = statement.executeQuery();
+        List<Integer> orderIdList = new ArrayList<>();
+
+        while (resultSet.next()) {
+            int orderId = resultSet.getInt(1);
+            orderIdList.add(orderId);
+        }
+
+        List<Order> orders = new ArrayList<>();
+        for (Integer orderId : orderIdList) {
+            Order order = getOrderDetail(orderId);
+            orders.add(order);
+        }
+        return orders;
+    }
+
+    public List<Customer> getTopCustomer() throws SQLException {
+        String sql = "call topCustomer()";
+        CallableStatement statement = connection.prepareCall(sql);
+        ResultSet resultSet = statement.executeQuery();
+        List<Integer> customerIdList = new ArrayList<>();
+        while (resultSet.next()) {
+            int customerId = resultSet.getInt(1);
+            customerIdList.add(customerId);
+        }
+
+        List<Customer> topCustomerList = new ArrayList<>();
+        for (Integer id : customerIdList) {
+            Customer customer = getCustomerById(id);
+            topCustomerList.add(customer);
+        }
+
+        return topCustomerList;
+    }
+
+    public List<Float> getTopCustomerRevenue() throws SQLException {
+        String sql = "call topCustomer()";
+        CallableStatement statement = connection.prepareCall(sql);
+        ResultSet resultSet = statement.executeQuery();
+        List<Float> topRevenueList = new ArrayList<>();
+        while (resultSet.next()) {
+            float revenue = resultSet.getFloat(3);
+            topRevenueList.add(revenue);
+        }
+
+        return topRevenueList;
+    }
+
 }

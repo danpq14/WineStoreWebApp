@@ -50,10 +50,10 @@
         <a class="nav-link" href="/customerSearch">Tra cứu khách hàng</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#">Tra cứu hóa đơn</a>
+        <a class="nav-link" href="/searchOrder">Tra cứu hóa đơn</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#">Theo dõi doanh thu</a>
+        <a class="nav-link" href="/revenue">Theo dõi doanh thu</a>
     </li>
 </ul>
 </body>

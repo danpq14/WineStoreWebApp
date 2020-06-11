@@ -15,12 +15,12 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </head>
 <body>
-<h1 style="text-align: center">Tìm kiếm khách hàng</h1>
+<h1 style="text-align: center">Tìm kiếm hóa đơn</h1>
 <div style="text-align: center">
     <div style="display: inline-block">
-        <form action="/customerSearch" method="post">
+        <form action="/searchOrder" method="post">
             <div class="form-group row">
-                <label class="col-4 col-form-label">Nhập mã hoặc tên khách hàng</label>
+                <label class="col-4 col-form-label">Nhập mã hóa đơn cần tìm kiếm</label>
                 <div class="col-8">
                     <input name="keyword" type="text" class="form-control">
                 </div>
