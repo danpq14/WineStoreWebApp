@@ -452,4 +452,23 @@ public class WineStoreDAO {
         }
         return wines;
     }
+
+    public List<WineInBill> topProductRevenue() throws SQLException {
+        String sql = "call topWine";
+        CallableStatement statement = connection.prepareCall(sql);
+        ResultSet resultSet = statement.executeQuery();
+        List<WineInBill> list = new ArrayList<>();
+
+        while (resultSet.next()) {
+            int wineId = resultSet.getInt(1);
+            String wineName = resultSet.getString(2);
+            int quantity = resultSet.getInt(4);
+            float cost = resultSet.getFloat(3);
+            WineInBill wineInBill = new WineInBill(wineId, wineName, quantity, cost);
+            list.add(wineInBill);
+        }
+
+        return list;
+    }
+
 }
