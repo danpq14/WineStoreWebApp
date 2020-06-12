@@ -32,7 +32,7 @@
 
 <ul class="nav nav-tabs">
     <li class="nav-item">
-        <a class="nav-link active" href="#">Trang chủ</a>
+        <a class="nav-link active" href="/AdminHomePage.jsp">Trang chủ</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="/AllProduct">Danh sách sản phẩm</a>

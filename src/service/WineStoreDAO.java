@@ -434,4 +434,22 @@ public class WineStoreDAO {
             insertOrderDetail.execute();
         }
     }
+
+    public List<Wine> getTopProduct() throws SQLException {
+        String sql = "call topWine";
+        CallableStatement statement = connection.prepareCall(sql);
+        ResultSet resultSet = statement.executeQuery();
+        List<Integer> wineIdList = new ArrayList<>();
+
+        while (resultSet.next()) {
+            int wineId = resultSet.getInt(1);
+            wineIdList.add(wineId);
+        }
+
+        List<Wine> wines = new ArrayList<>();
+        for (Integer id : wineIdList) {
+            wines.add(selectWineByID(id));
+        }
+        return wines;
+    }
 }

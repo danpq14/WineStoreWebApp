@@ -18,7 +18,7 @@
 
 <ul class="nav nav-tabs">
     <li class="nav-item">
-        <a class="nav-link active" href="#">Trang chủ</a>
+        <a class="nav-link active" href="/homePage">Trang chủ</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="/customerAction?action=showAllProduct">Danh sách tất cả các sản phẩm</a>
@@ -27,7 +27,7 @@
         <a class="nav-link" href="/topProduct">Top sản phẩm bán chạy</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="/topCustomer">Tìm Kiếm Sản Phẩm</a>
+        <a class="nav-link" href="/searchProduct">Tìm Kiếm Sản Phẩm</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="/topCustomer">Giỏ Hàng</a>

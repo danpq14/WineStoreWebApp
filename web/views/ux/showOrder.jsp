@@ -9,6 +9,26 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
 <body>
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a class="nav-link active" href="/homePage">Trang chủ</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/customerAction?action=showAllProduct">Danh sách tất cả các sản phẩm</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/topProduct">Top sản phẩm bán chạy</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/searchProduct">Tìm Kiếm Sản Phẩm</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/topCustomer">Giỏ Hàng</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/topCustomer">Thông tin cá nhân</a>
+    </li>
+</ul>
 <h1 style="text-align: center">THÔNG TIN GIỎ HÀNG</h1>
     <div style="text-align: center">
         <div style="display: inline-block">

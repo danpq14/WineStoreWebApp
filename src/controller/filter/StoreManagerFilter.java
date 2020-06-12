@@ -1,5 +1,7 @@
 package controller.filter;
 
+import model.Account;
+
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
@@ -17,9 +19,10 @@ public class StoreManagerFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) resp;
 
         HttpSession session = request.getSession();
-        Object o = session.getAttribute("role");
-        if (o != null) {
-            int role = Integer.parseInt(o.toString());
+        Object o = session.getAttribute("account");
+        Account account = (Account) o;
+        int role = account.getRole();
+        if (account != null) {
             int role_admin = 1;
             if (role == role_admin) {
                 chain.doFilter(req, resp);
